@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import io
 import numpy as np
 import torch
 import torch.utils
@@ -775,7 +776,10 @@ def parse_PDB(
             "NZ",
         ]
 
-    atoms = parsePDB(input_path)
+    if isinstance(input_path, str):
+        atoms = parsePDB(input_path)
+    elif isinstance(input_path, io.StringIO):
+        atoms = parsePDBStream(input_path)
     if not parse_atoms_with_zero_occupancy:
         atoms = atoms.select("occupancy > 0")
     if chains:
