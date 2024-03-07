@@ -96,11 +96,13 @@ def main(args) -> None:
     if args.fixed_residues_multi:
         with open(args.fixed_residues_multi, "r") as fh:
             fixed_residues_multi = json.load(fh)
+        fixed_residues_multi = {k: v.split() for k,v in fixed_residues_multi.items()}
     else:
         fixed_residues = [item for item in args.fixed_residues.split()]
         fixed_residues_multi = {}
         for pdb in pdb_paths:
             fixed_residues_multi[pdb] = fixed_residues
+
 
     if args.redesigned_residues_multi:
         with open(args.redesigned_residues_multi, "r") as fh:
@@ -154,7 +156,11 @@ def main(args) -> None:
     for pdb in pdb_paths:
         if args.verbose:
             print("Designing protein from this path:", pdb)
-        fixed_residues = fixed_residues_multi[pdb]
+        try:
+            fixed_residues = fixed_residues_multi[pdb]
+        except KeyError:
+            # Checking if maybe the fixed_residues dict has keys with just the PDB names and not with the entire filename
+            fixed_residues = fixed_residues_multi[os.path.basename(pdb).replace(".pdb", "")]
         redesigned_residues = redesigned_residues_multi[pdb]
         protein_dict, backbone, other_atoms, icodes, _ = parse_PDB(
             pdb,
