@@ -44,8 +44,8 @@ class MPNNRunner(object):
 
         __checkpoints = {"protein_mpnn": f"{SCRIPT_PATH}/model_params/proteinmpnn_v_48_020.pt",
                          "ligand_mpnn": f"{SCRIPT_PATH}/model_params/ligandmpnn_v_32_010_25.pt",
-                         "per_residue_label_membrane_mpnn": f"{SCRIPT_PATH}/model_params/per_residue_label_membrane_mpnn_v_48_020.pt"
-                         "global_label_membrane_mpnn": f"{SCRIPT_PATH}/model_params/global_label_membrane_mpnn_v_48_020.pt"
+                         "per_residue_label_membrane_mpnn": f"{SCRIPT_PATH}/model_params/per_residue_label_membrane_mpnn_v_48_020.pt",
+                         "global_label_membrane_mpnn": f"{SCRIPT_PATH}/model_params/global_label_membrane_mpnn_v_48_020.pt",
                          "soluble_mpnn": f"{SCRIPT_PATH}/model_params/solublempnn_v_48_020.pt"}
 
         if checkpoint_path is None:
