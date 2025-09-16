@@ -4,6 +4,23 @@ This package provides inference code for [LigandMPNN](https://www.biorxiv.org/co
 
 Third party code: side chain packing uses helper functions from [Openfold](https://github.com/aqlaboratory/openfold).
 
+
+### LigandMPNN API
+
+This fork implements a Python importable API for LigandMPNN.
+This API functions like the commandline script, but operates purely in memory.
+```
+sys.path.append("/path/to/this/repo")
+import mpnn_api
+mpnnrunner = mpnn_api.MPNNRunner("ligand_mpnn")
+mpnn_input = mpnnrunner.MPNN_Input()
+mpnn_input.pdb = "./inputs/1BC8.pdb"
+mpnn_input.temperature = 0.1
+mpnn_input.fixed_residues = ["A100", "A132"]
+mpnn_input.batch_size = 10
+out = mpnnrunner.run(mpnn_input)  # returns a dictionary with sequences and more
+```
+
 ### Running the code
 ```
 git clone https://github.com/dauparas/LigandMPNN.git

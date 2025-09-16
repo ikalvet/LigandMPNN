@@ -1,5 +1,5 @@
 from __future__ import print_function
-
+import os, io
 import numpy as np
 import torch
 import torch.utils
@@ -481,9 +481,16 @@ def write_full_PDB(
         other_atoms_g.setChids(other_atoms.getChids())
         if force_hetatm:
             other_atoms_g.setFlags("hetatm", other_atoms.getFlags("hetatm"))
-        writePDB(save_path, protein + other_atoms_g)
+        if isinstance(save_path, io.StringIO):
+            writePDBStream(save_path, protein+other_atoms_g)
+        else:
+            writePDB(save_path, protein + other_atoms_g)
     else:
-        writePDB(save_path, protein)
+        if isinstance(save_path, io.StringIO):
+            writePDBStream(save_path, protein)
+        else:
+            writePDB(save_path, protein)
+
 
 
 def get_aligned_coordinates(protein_atoms, CA_dict: dict, atom_name: str):
@@ -512,7 +519,7 @@ def get_aligned_coordinates(protein_atoms, CA_dict: dict, atom_name: str):
 
 
 def parse_PDB(
-    input_path: str,
+    input_path: (str, object),
     device: str = "cpu",
     chains: list = [],
     parse_all_atoms: bool = False,
@@ -775,7 +782,11 @@ def parse_PDB(
             "NZ",
         ]
 
-    atoms = parsePDB(input_path)
+    if os.path.exists(input_path):
+        atoms = parsePDB(input_path)
+    else:
+        atoms = parsePDBStream(io.StringIO(input_path))
+
     if not parse_atoms_with_zero_occupancy:
         atoms = atoms.select("occupancy > 0")
     if chains:
