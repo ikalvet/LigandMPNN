@@ -191,6 +191,7 @@ class MPNNRunner(object):
             self.number_of_packs_per_design = 1
             self.sc_num_denoising_steps = 3
             self.sc_num_samples = 16
+            self.pack_with_ligand_context = True
             self.repack_everything = None
             self.zero_indexed = None
             self.force_hetatm = None
